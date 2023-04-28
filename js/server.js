@@ -1,6 +1,7 @@
 const http = require('http'),
-  fs = require('fs'),
-  url = require('url');
+fs = require('fs'),
+url = require('url');
+  
 
 http.createServer((request, response) => {
   let addr = request.url,
@@ -16,9 +17,9 @@ http.createServer((request, response) => {
   });
 
   if (q.pathname.includes('documentation')) {
-    filePath = (__dirname + '/documentation.html');
+    filePath = (__dirname + 'documentation.html');
   } else {
-    filePath = 'index.html';
+    filePath = '/Users/jpcody/Desktop/CareerFoundry/movie_api/index.html';
   }
 
   fs.readFile(filePath, (err, data) => {
