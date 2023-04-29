@@ -17,7 +17,7 @@ http.createServer((request, response) => {
   });
 
   if (q.pathname.includes('documentation')) {
-    filePath = (__dirname + 'documentation.html');
+    filePath = (__dirname + '/documentation.html');
   } else {
     filePath = '/Users/jpcody/Desktop/CareerFoundry/movie_api/index.html';
   }
