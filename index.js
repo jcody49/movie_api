@@ -39,10 +39,10 @@ const topTenMovies = [
 app.use(morgan('combined', {stream: accessLogStream}));
 
 // Log errors to the terminal
-app.use(morgan('combined', {
-    skip: function (req, res) { return res.statusCode < 400 },
-    stream: process.stderr
-}));
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 
 app.get('/movies', (req, res) => {
