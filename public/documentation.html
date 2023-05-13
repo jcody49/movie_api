@@ -14,5 +14,137 @@
         The app provides users with details<br>
         about different movies, directors, and genres.
     </p>
+    <p>
+        <h2>Endpoint Map</h2><br>
+        <div>
+            <h3>Movies:</h3>
+    
+            <h4>Endpoint: '/movies'</h4>  
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: Gets all Movies</li>
+                <li>Parameters: None</li>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>A JSON object of all the movies</p>
+            </ul>
+
+
+            <h4>Endpoint: '/movies/:title'</h4>  
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: Gets movie by title</li>
+                <li>Parameters: title</li>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>A JSON object a specific movie</p>
+            </ul>
+
+
+
+            <h4>Endpoint: '/movies/genre/:genreName'</h4>  
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: Gets genre of movie</li>
+                <li>Parameters: genreName</li>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>A JSON object of a specific genre</p>
+            </ul>
+
+
+            <h4>Endpoint: '/movies/directors/:directorName'</h4>  
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: get data about a director</li>
+                <li>Parameters: directorName</li>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>A JSON object of a specific director</p>
+            </ul>
+        </div><br><br>
+
+
+        <div>    
+            <h3>Users:</h3>
+                
+            <h4>Endpoint: '/users'</h4>  
+            <ul>
+                <li>Method: POST</li>
+                <li>Description: Registers new user</li>
+                <li>Parameters: name</li>
+                <li>Data expected in request body:</li>
+                <p>JSON object of the new user: {"id": "", "name": "", "favoriteMovies": ""}</p>
+                <li>Data expected in response:</li>
+                <p>JSON object of the new user: {JSON object of the new user: {"id": "", "name": "", "favoriteMovies": ""}</p>
+            </ul>
+
+
+            <h4>Endpoint: '/users/:id'</h4>  
+            <ul>
+                <li>Method: PUT</li>
+                <li>Description: Updates user information</li>
+                <li>Parameters:</li>
+                    <ul>
+                        <li>id</li>
+                        <li>name</li>
+                    </ul>
+                <li>Data expected in request body:</li>
+                <p>A JSON object of the new user, structured like: {"id": "", "name": "", "favoriteMovies": ""}</p>
+                <li>Data expected in response:</li>
+                <p>A JSON object of the new user, structured like: {"id": "", "name": "", "favoriteMovies": ""}</p>
+            </ul>
+
+
+            <h4>Endpoint: '/users/:id/:movieTitle'</h4>  
+            <ul>
+                <li>Method: POST</li>
+                <li>Description: Adds movie to favoriteMovies</li>
+                <li>Parameters:</li>
+                <ul> 
+                    <li>id</li>
+                    <li>movieTitle</li>
+                </ul>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>A JSON of the user</p>
+            </ul>
+
+
+            <h4>Endpoint: '/users/:id/:movieTitle'</h4>  
+            <ul>
+                <li>Method: DELETE</li>
+                <li>Description: Removes movie from favoriteMovies</li>
+                <li>Parameters:</li>
+                    <ul>
+                        <li>id</li>
+                        <li>movieTitle</li>
+                    </ul>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>Text that shows the movie has been removed</p>
+            </ul>
+
+
+            <h4>Endpoint: '/users/:id/'</h4>  
+            <ul>
+                <li>Method: DELETE</li>
+                <li>Description: Unregisters user</li>
+                <li>Parameters: id</li>
+                <li>Data expected in request body:</li>
+                <p>None</p>
+                <li>Data expected in response:</li>
+                <p>Text showing the user has been removed</p>
+            </ul>
+        </div>
+               
+            
+    </p>
 
 </body>
