@@ -5,12 +5,21 @@ const express = require('express'),
   path = require('path'),
   nodemon = require('nodemon'),
   lodash = require('lodash'),
-  bodyParser = require('body-parser');
-  uuid = require('uuid');
+  bodyParser = require('body-parser'),
+  uuid = require('uuid'),
+  mongodb = require('mongodb'),
+  mongoose = require('mongoose'),
+  Models = require('./models.js'),
+  Movies = Models.Movie,
+  Users = Models.User;
 const { send } = require('process');
 
 const app = express();
 // create a write stream (in append mode)
+
+
+
+mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(express.static('public'));
 
@@ -214,6 +223,8 @@ app.get('/movies/directors/:directorName', (req, res) => {
 
 
 
-app.listen(8080, () => {
+mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+/*app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
-});
+});*/
