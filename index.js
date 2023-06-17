@@ -19,17 +19,12 @@ const { send } = require('process');
 const app = express();
 // create a write stream (in append mode)
 
-
-
-
 app.use(express.static('public'));
 
 app.use(bodyParser.json());
 
-
 // a ‘log.txt’ file is created in root directory
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
-
 
 
 
@@ -45,7 +40,8 @@ app.use((err, req, res, next) => {
 
 
 
-//Add a user
+
+//CREATE--Add a user
 /* We’ll expect JSON in this format
 {
   ID: Integer,
@@ -80,8 +76,31 @@ app.post('/users', (req,res) => {
   });
 });
 
+//CREATE--adds movie to favoriteMovies
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+  try {
+    const { Username, MovieID } = req.params;
 
-// Update a user's info, by username
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username },
+      { $push: { FavoriteMovies: MovieID } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+
+
+// UPDATE--Update a user's info, by username
 /* We’ll expect JSON in this format
 {
   Username: String, (required)
@@ -111,47 +130,36 @@ app.put('/users/:Username', (req, res) => {
 });
 
 
-
-//CREATE--adds movie to favoriteMovies
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
-  try {
-    const { Username, MovieID } = req.params;
-
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username },
-      { $push: { FavoriteMovies: MovieID } },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).send('User not found');
-    }
-
-    res.json(updatedUser);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  }
-});
-
-
 //DELETE--deletes movie from favoriteMovies
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  Users.findOneAndRemove({  })
-
-  if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter(title => title !== movieTitle);
-    res.status(200).send(`${movieTitle} has been removed from user ${id}s array`);;
-  } else{
-    res.status(400).send('no such user')
+app.delete(
+  '/users/:userName/movies/:MovieID',
+  (req, res) => {
+    Users.findOneAndUpdate(
+      { Username: req.params.userName },
+      {
+        $pull: { FavoriteMovies: req.params.MovieID }
+      },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.status(404).send("Error: User doesn't exist");
+        } else {
+          res.json(updatedUser);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
   }
-})
+);
 
 
 
 //DELETE--unregisters user
 app.delete('/users/:Username', (req, res) => {
-  Users.findOneAndRemove({ username: req.params.Username })
+  Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
@@ -169,7 +177,7 @@ app.delete('/users/:Username', (req, res) => {
 
 
 
-//Get all users
+//READ--Get all users
 app.get('/users', (req, res) => {
   Users.find()
   .then((users) => {
@@ -181,7 +189,7 @@ app.get('/users', (req, res) => {
   });
 });
 
-//Get a user by username
+//READ--Get a user by username
 app.get('/users/:Username', (req, res) => {
   Users.findOne({username: req.params.Username })
   .then((user) => {

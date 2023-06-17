@@ -66,6 +66,8 @@
                 <li>Data expected in response:</li>
                 <p>A JSON object of a specific director</p>
             </ul>
+
+
         </div><br><br>
 
 
@@ -84,19 +86,21 @@
             </ul>
 
 
-            <h4>Endpoint: '/users/:id'</h4>  
+            <h4>Endpoint: '/users/:Username'</h4>
             <ul>
                 <li>Method: PUT</li>
-                <li>Description: Updates user information</li>
-                <li>Parameters:</li>
-                    <ul>
-                        <li>id</li>
-                        <li>name</li>
-                    </ul>
-                <li>Data expected in request body:</li>
-                <p>A JSON object of the new user, structured like: {"id": "", "name": "", "favoriteMovies": ""}</p>
-                <li>Data expected in response:</li>
-                <p>A JSON object of the new user, structured like: {"id": "", "name": "", "favoriteMovies": ""}</p>
+                <li>Description: Update a user's information by username</li>
+                <li>Parameters: Username</li>
+                <li>Data expected in request body: JSON object with the updated user information:</li>
+                <pre>
+                {
+                    "Username": "NewUsername",
+                    "Password": "NewPassword",
+                    "Email": "NewEmail",
+                    "Birthdate": "NewBirthdate"
+                }
+                </pre>
+                <li>Data expected in response: JSON object containing the updated user information</li>
             </ul>
 
 
@@ -142,6 +146,30 @@
                 <li>Data expected in response:</li>
                 <p>Text showing the user has been removed</p>
             </ul>
+
+
+            <h4>Endpoint: '/users/name/:userName'</h4>
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: Gets user by name</li>
+                <li>Parameters: userName</li>
+                <li>Data expected in request body: None</li>
+                <li>Data expected in response: A JSON object of a specific user</li>
+            </ul>
+
+
+            <h4>Endpoint: '/users'</h4>
+            <ul>
+                <li>Method: GET</li>
+                <li>Description: Gets all users</li>
+                <li>Parameters: None</li>
+                <li>Data expected in request body: None</li>
+                <li>Data expected in response: A JSON object containing all users</li>
+            </ul>
+
+
+        
+            
         </div>
                
             
