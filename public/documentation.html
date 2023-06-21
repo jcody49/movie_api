@@ -24,6 +24,10 @@
                 <li>Method: GET</li>
                 <li>Logic: Gets all Movies</li>
                 <li>Parameters: None</li>
+                <li>Mongoose Query: 
+                    app.get('/movies', (req, res) => {
+                        Movies.find()
+                </li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -36,6 +40,11 @@
                 <li>Method: GET</li>
                 <li>Logic: Gets movie by title</li>
                 <li>Parameters: title</li>
+                <li>Mongoose Query: 
+                    app.get('/movies/:title', (req, res) => {
+                        const { title } = req.params;
+                        Movies.findOne({ Title: title })
+                </li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -47,8 +56,12 @@
             <h4>Endpoint: '/movies/genre/:genreName'</h4>  
             <ul>
                 <li>Method: GET</li>
-                <li>Logic: Gets genre of movie</li>
+                <li>Logic: Gets movies by genre</li>
                 <li>Parameters: genreName</li>
+                <li>Mongoose Query: 
+                    app.get('/movies/genre/:genreName', (req, res) => {
+                        Movies.find({ 'Genre.Name': req.params.genreName })
+                </li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -61,6 +74,10 @@
                 <li>Method: GET</li>
                 <li>Logic: get data about a director</li>
                 <li>Parameters: directorName</li>
+                <li>Mongoose Query: 
+                    app.get('/movies/directors/:directorName', (req, res) => {
+                        Movies.findOne({ 'Director.Name': req.params.directorName })
+                </li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -79,6 +96,20 @@
                 <li>Method: POST</li>
                 <li>Logic: Registers new user</li>
                 <li>Parameters: name</li>
+                <li>Mongoose Query: 
+                    Users.findOne({ Username: req.body.Username })
+                    .then((user) => {
+                        if (user) {
+                        return res.status(400).send(req.body.Username + 'already exists');
+                        } else {
+                        Users
+                            .create({
+                            Username: req.body.Username,
+                            Password: req.body.Password,
+                            Email: req.body.Email,
+                            Birthday: req.body.Birthday
+                        })
+                </li>
                 <li>Data expected in request body:</li>
                 <p>JSON object of the new user: {"id": "", "name": "", "favoriteMovies": ""}</p>
                 <li>Data expected in response:</li>
@@ -91,6 +122,10 @@
                 <li>Method: PUT</li>
                 <li>Logic: Update a user's information by username</li>
                 <li>Parameters: Username</li>
+                <li>Mongoose Query: 
+                    app.get('/users/:Username', (req, res) => {
+                        Users.findOne({username: req.params.Username })
+                </li>
                 <li>Data expected in request body: JSON object with the updated user information:</li>
                 <pre>
                 {
@@ -109,6 +144,13 @@
                 <li>Method: POST</li>
                 <li>Logic: Adds movie to favoriteMovies</li>
                 <li>Parameters:</li>
+                <li>Mongoose Query: 
+                    app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+                        try {
+                          const { Username, MovieID } = req.params;
+                      
+                          const updatedUser = await Users.findOneAndUpdate(
+                </li>
                 <ul> 
                     <li>id</li>
                     <li>movieTitle</li>
@@ -125,10 +167,21 @@
                 <li>Method: DELETE</li>
                 <li>Logic: Removes movie from favoriteMovies</li>
                 <li>Parameters:</li>
-                    <ul>
-                        <li>id</li>
-                        <li>movieTitle</li>
-                    </ul>
+                <ul>
+                    <li>id</li>
+                    <li>movieTitle</li>
+                </ul>
+                <li>Mongoose Query: 
+                    app.delete(
+                    '/users/:userName/movies/:MovieID',
+                    (req, res) => {
+                      Users.findOneAndUpdate(
+                        { Username: req.params.userName },
+                        {
+                          $pull: { FavoriteMovies: req.params.MovieID }
+                        },
+                        { new: true }
+                      )</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -141,6 +194,10 @@
                 <li>Method: DELETE</li>
                 <li>Logic: Unregisters user</li>
                 <li>Parameters: id</li>
+                <li>Mongoose Query: 
+                    app.delete('/users/:Username', (req, res) => {
+                        Users.findOneAndRemove({ Username: req.params.Username })
+                </li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
                 <li>Data expected in response:</li>
@@ -151,8 +208,12 @@
             <h4>Endpoint: '/users/name/:userName'</h4>
             <ul>
                 <li>Method: GET</li>
-                <li>Logic: Gets user by name</li>
+                <li>Logic: Gets user by username</li>
                 <li>Parameters: userName</li>
+                <li>Mongoose Query: 
+                    app.get('/users/:Username', (req, res) => {
+                        Users.findOne({username: req.params.Username })
+                </li>
                 <li>Data expected in request body: None</li>
                 <li>Data expected in response: A JSON object of a specific user</li>
             </ul>
@@ -163,6 +224,10 @@
                 <li>Method: GET</li>
                 <li>Logic: Gets all users</li>
                 <li>Parameters: None</li>
+                <li>Mongoose Query: 
+                    app.get('/users', (req, res) => {
+                        Users.find()
+                </li>
                 <li>Data expected in request body: None</li>
                 <li>Data expected in response: A JSON object containing all users</li>
             </ul>
