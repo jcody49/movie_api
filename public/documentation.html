@@ -22,7 +22,7 @@
             <h4>Endpoint: '/movies'</h4>  
             <ul>
                 <li>Method: GET</li>
-                <li>Description: Gets all Movies</li>
+                <li>Logic: Gets all Movies</li>
                 <li>Parameters: None</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
@@ -34,7 +34,7 @@
             <h4>Endpoint: '/movies/:title'</h4>  
             <ul>
                 <li>Method: GET</li>
-                <li>Description: Gets movie by title</li>
+                <li>Logic: Gets movie by title</li>
                 <li>Parameters: title</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
@@ -47,7 +47,7 @@
             <h4>Endpoint: '/movies/genre/:genreName'</h4>  
             <ul>
                 <li>Method: GET</li>
-                <li>Description: Gets genre of movie</li>
+                <li>Logic: Gets genre of movie</li>
                 <li>Parameters: genreName</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
@@ -59,7 +59,7 @@
             <h4>Endpoint: '/movies/directors/:directorName'</h4>  
             <ul>
                 <li>Method: GET</li>
-                <li>Description: get data about a director</li>
+                <li>Logic: get data about a director</li>
                 <li>Parameters: directorName</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
@@ -77,7 +77,7 @@
             <h4>Endpoint: '/users'</h4>  
             <ul>
                 <li>Method: POST</li>
-                <li>Description: Registers new user</li>
+                <li>Logic: Registers new user</li>
                 <li>Parameters: name</li>
                 <li>Data expected in request body:</li>
                 <p>JSON object of the new user: {"id": "", "name": "", "favoriteMovies": ""}</p>
@@ -89,7 +89,7 @@
             <h4>Endpoint: '/users/:Username'</h4>
             <ul>
                 <li>Method: PUT</li>
-                <li>Description: Update a user's information by username</li>
+                <li>Logic: Update a user's information by username</li>
                 <li>Parameters: Username</li>
                 <li>Data expected in request body: JSON object with the updated user information:</li>
                 <pre>
@@ -107,7 +107,7 @@
             <h4>Endpoint: '/users/:id/:movieTitle'</h4>  
             <ul>
                 <li>Method: POST</li>
-                <li>Description: Adds movie to favoriteMovies</li>
+                <li>Logic: Adds movie to favoriteMovies</li>
                 <li>Parameters:</li>
                 <ul> 
                     <li>id</li>
@@ -123,7 +123,7 @@
             <h4>Endpoint: '/users/:id/:movieTitle'</h4>  
             <ul>
                 <li>Method: DELETE</li>
-                <li>Description: Removes movie from favoriteMovies</li>
+                <li>Logic: Removes movie from favoriteMovies</li>
                 <li>Parameters:</li>
                     <ul>
                         <li>id</li>
@@ -139,7 +139,7 @@
             <h4>Endpoint: '/users/:id/'</h4>  
             <ul>
                 <li>Method: DELETE</li>
-                <li>Description: Unregisters user</li>
+                <li>Logic: Unregisters user</li>
                 <li>Parameters: id</li>
                 <li>Data expected in request body:</li>
                 <p>None</p>
@@ -151,7 +151,7 @@
             <h4>Endpoint: '/users/name/:userName'</h4>
             <ul>
                 <li>Method: GET</li>
-                <li>Description: Gets user by name</li>
+                <li>Logic: Gets user by name</li>
                 <li>Parameters: userName</li>
                 <li>Data expected in request body: None</li>
                 <li>Data expected in response: A JSON object of a specific user</li>
@@ -161,7 +161,7 @@
             <h4>Endpoint: '/users'</h4>
             <ul>
                 <li>Method: GET</li>
-                <li>Description: Gets all users</li>
+                <li>Logic: Gets all users</li>
                 <li>Parameters: None</li>
                 <li>Data expected in request body: None</li>
                 <li>Data expected in response: A JSON object containing all users</li>
