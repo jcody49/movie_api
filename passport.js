@@ -9,26 +9,32 @@ let Users = Models.User,
 
 
 
-passport.use(new LocalStrategy({
-usernameField: 'Username',
-passwordField: 'Password'
-}, (username, password, callback) => {
-console.log(username + '  ' + password);
-Users.findOne({ username: username }, (error, user) => {
-    if (error) {
-    console.log('Error retrieving user:', error);
-    return callback(error);
-    }
-
-    if (!user) {
-    console.log('Incorrect username');
-    return callback(null, false, { message: 'Incorrect username or password.' });
-    }
-
-    console.log('User found:', user);
-    return callback(null, user);
-});
-}));
+    passport.use(
+        new LocalStrategy(
+            {
+                usernameField: "Username",
+                passwordField: "Password",
+            },
+            (username, password, done) => {
+                console.log(username + "  " + password);
+                Users.findOne({ Username: username })
+                    .then(user => {
+                        if (!user) {
+                            console.log("incorrect username");
+                            return done(null, false, {
+                                message: "Incorrect username or password.",
+                            });
+                        }
+                        console.log("finished");
+                        return done(null, user);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        return done(error);
+                    });
+            }
+        )
+    );
 
 
 

@@ -19,11 +19,11 @@ let generateJWTToken = (user) => {
 module.exports = (router) => { 
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
-      
+      console.log('error' + error);
       if (error || !user) {
         return res.status(400).json({
-          error: 'Cannot find the user: ' + user,
-          user: user
+          error: 'Error is: ' + error,
+          user: 'Cannot find the user: ' + user,
         });
       }
       req.login(user, { session: false }, (error) => {
