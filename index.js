@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com, https://myflixmovieapp-3df5d197457c.herokuapp.com/'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -77,7 +77,7 @@ app.post('/users',
     check('Email', 'Email does not appear to be valid').isEmail()
   ], (req, res) => {
 
-  // check the validation object for errors
+    // check the validation object for errors
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
