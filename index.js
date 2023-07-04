@@ -16,6 +16,21 @@ const { send } = require('process');
 
 
 
+//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+/*mongoose.connect(process.env.CONNECTION_URI, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
+});*/
+
+
+mongoose.connect(process.env.mongosh "mongodb+srv://cluster0.5scdwn9.mongodb.net/cfDB" --apiVersion 1 --username jon, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
+});
+
+
+
 
 
 const app = express();
@@ -301,15 +316,16 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 
 
 
-
-
-
-//mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
  console.log('Listening on Port ' + port);
 });
+
+
+
+
+mongoimport --uri mongodb+srv://jon:Password@cluster0.5scdwn9.mongodb.net/cfDB --collection users --type json --file ../mdbe/mdbeusers.json
+
+mongoimport --uri mongodb+srv://jon:Password@cluster0.5scdwn9.mongodb.net/cfDB --collection movies --type json --file ../mdbe/mdbemovies.json
+
+mongosh "mongodb+srv://cluster0.5scdwn9.mongodb.net/cfDB" --apiVersion 1 --username jon
