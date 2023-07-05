@@ -19,12 +19,12 @@ const { send } = require('process');
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-/*
+
 //port
 mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
-});*/
+});
 
 console.log(process.env.CONNECTION_URI);
 
