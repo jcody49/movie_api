@@ -8,30 +8,25 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   mongodb = require('mongodb'),
-  mongoose = require('mongoose'),
-  Models = require('./models.js'),
-  Movies = Models.Movie,
-  Users = Models.User
+  mongoose = require('mongoose'),// logic for whole server enpoints
+  Models = require('./models.js'),// logic for whole server enpoints
+  Movies = Models.Movie,// logic for whole server enpoints
+  Users = Models.User// logic for whole server enpoints
 const { send } = require('process');
 
 
-
+//local connection
 //mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-/*mongoose.connect(process.env.CONNECTION_URI, { 
+
+/*
+//port
+mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 });*/
 
-
-mongoose.connect(process.env.mongosh "mongodb+srv://cluster0.5scdwn9.mongodb.net/cfDB" --apiVersion 1 --username jon, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true 
-});
-
-
-
-
+console.log(process.env.CONNECTION_URI);
 
 const app = express();
 // create a write stream (in append mode)
@@ -57,9 +52,14 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
+
+
+
+
 
 // a ‘log.txt’ file is created in root directory
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
@@ -80,51 +80,39 @@ app.use((err, req, res, next) => {
 
 
 app.post('/users',
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username is required').isLength({ min: 5 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
+  ], async (req, res) => {
+    try {
+      let errors = validationResult(req);
 
-    // check the validation object for errors
-    let errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
 
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      let hashedPassword = await Users.hashPassword(req.body.Password);
+      let user = await Users.findOne({ Username: req.body.Username });
+
+      if (user) {
+        return res.status(400).send(req.body.Username + ' already exists');
+      } else {
+        user = await Users.create({
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        });
+
+        res.status(201).json(user);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
     }
-
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
-      .then((user) => {
-        if (user) {
-          //If the user is found, send a response that it already exists
-          return res.status(400).send(req.body.Username + ' already exists');
-        } else {
-          Users
-            .create({
-              Username: req.body.Username,
-              Password: hashedPassword,
-              Email: req.body.Email,
-              Birthday: req.body.Birthday
-            })
-            .then((user) => { res.status(201).json(user) })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).send('Error: ' + error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      });
-  });
+});
 
 //CREATE--adds movie to favoriteMovies
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -316,6 +304,8 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 
 
 
+
+
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
  console.log('Listening on Port ' + port);
@@ -324,8 +314,9 @@ app.listen(port, "0.0.0.0", () => {
 
 
 
-mongoimport --uri mongodb+srv://jon:Password@cluster0.5scdwn9.mongodb.net/cfDB --collection users --type json --file ../mdbe/mdbeusers.json
 
-mongoimport --uri mongodb+srv://jon:Password@cluster0.5scdwn9.mongodb.net/cfDB --collection movies --type json --file ../mdbe/mdbemovies.json
 
-mongosh "mongodb+srv://cluster0.5scdwn9.mongodb.net/cfDB" --apiVersion 1 --username jon
+
+
+
+
