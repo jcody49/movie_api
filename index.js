@@ -155,11 +155,16 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], async (req, res) => {
+  ],
+  async (req, res) => {
     try {
-      let errors = validationResult(req);
-      let hashedPassword = await Users.hashPassword(req.body.Password);
-      Users.findOneAndUpdate(
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
+
+      const hashedPassword = await Users.hashPassword(req.body.Password);
+      const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
         {
           $set: {
@@ -170,23 +175,20 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
           },
         },
         { new: true }
-      )
-        .then((user) => {
-          if (!user) {
-            return res.status(404).send('Error: No user was found');
-          } else {
-            res.json(user);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err);
-        });
+      );
+
+      if (!updatedUser) {
+        return res.status(404).send('Error: No user was found');
+      }
+
+      res.json(updatedUser);
     } catch (error) {
       console.error(error);
       res.status(500).send('Error: ' + error);
     }
-});
+  }
+);
+
 
 
 
