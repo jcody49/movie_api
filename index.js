@@ -21,10 +21,12 @@ const { send } = require('process');
 
 
 //port
+
 mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 });
+
 
 console.log(process.env.CONNECTION_URI);
 
