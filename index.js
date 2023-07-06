@@ -148,6 +148,26 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   Email: String, (required)
   Birthday: Date
 }*/
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  const { Username } = req.params;
+  const { Username: newUsername, Password, Email, Birthdate } = req.body;
+
+  Users.findOneAndUpdate(
+    { Username },
+    { $set: { Username: newUsername, Password, Email, Birthdate } },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).send('User not found');
+      }
+      res.json(updatedUser);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   [
@@ -155,40 +175,33 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ],
-  async (req, res) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-      }
-
-      const hashedPassword = await Users.hashPassword(req.body.Password);
-      const updatedUser = await Users.findOneAndUpdate(
-        { Username: req.params.Username },
-        {
-          $set: {
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthdate: req.body.Birthdate
-          },
+  ], (req, res) => {
+    let errors = validationResult(req);
+    let hashedPassword = Users.hashPassword(req.body.password);
+    Users.findOneAndUpdate(
+      { username: req.params.username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Birthdate: req.body.Birthdate
         },
-        { new: true }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).send('Error: No user was found');
-      }
-
-      res.json(updatedUser);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    }
-  }
-);
-
+      },
+      { new: true }
+    )
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send('Error: No user was found');
+        } else {
+          res.json(user);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
 
 
 
