@@ -28,8 +28,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 
-
-
+console.log(process.env.CONNECTION_URI);
 
 const app = express();
 // create a write stream (in append mode)
