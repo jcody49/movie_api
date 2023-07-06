@@ -155,33 +155,38 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
-    let errors = validationResult(req);
-    let hashedPassword = Users.hashPassword(req.body.password);
-    Users.findOneAndUpdate(
-      { username: req.params.username },
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthdate: req.body.Birthdate
+  ], async (req, res) => {
+    try {
+      let errors = validationResult(req);
+      let hashedPassword = await Users.hashPassword(req.body.Password);
+      Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        {
+          $set: {
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthdate: req.body.Birthdate
+          },
         },
-      },
-      { new: true }
-    )
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send('Error: No user was found');
-        } else {
-          res.json(user);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+        { new: true }
+      )
+        .then((user) => {
+          if (!user) {
+            return res.status(404).send('Error: No user was found');
+          } else {
+            res.json(user);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    }
+});
 
 
 
