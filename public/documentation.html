@@ -1,4 +1,131 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>myFlix Documentation</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+  </style>
+</head>
+<body>
+  <h2>API Documentation</h2>
+  <table>
+    <tr>
+      <th>Endpoint</th>
+      <th>Method</th>
+      <th>Description</th>
+      <th>Data Validation</th>
+      <th>Authentication Required</th>
+    </tr>
+    <tr>
+      <td>/users</td>
+      <td>POST</td>
+      <td>Registers a new user</td>
+      <td>
+        <ul>
+          <li>Username is required and must be at least 5 characters long</li>
+          <li>Username must contain alphanumeric characters only</li>
+          <li>Password is required</li>
+          <li>Email must be a valid email address</li>
+        </ul>
+      </td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users/:Username</td>
+      <td>PUT</td>
+      <td>Updates a user's information</td>
+      <td>
+        <ul>
+          <li>Username is required and must be at least 5 characters long</li>
+          <li>Username must contain alphanumeric characters only</li>
+          <li>Password is required</li>
+          <li>Email must be a valid email address</li>
+        </ul>
+      </td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users/:Username</td>
+      <td>DELETE</td>
+      <td>Deletes a user</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users/:Username/movies/:MovieID</td>
+      <td>POST</td>
+      <td>Adds a movie to a user's favoriteMovies</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users/:Username/movies/:MovieID</td>
+      <td>DELETE</td>
+      <td>Removes a movie from a user's favoriteMovies</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users</td>
+      <td>GET</td>
+      <td>Gets all users</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/users/:Username</td>
+      <td>GET</td>
+      <td>Gets a user by username</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/movies</td>
+      <td>GET</td>
+      <td>Gets all movies</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/movies/:title</td>
+      <td>GET</td>
+      <td>Gets a movie by title</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/movies/genre/:genreName</td>
+      <td>GET</td>
+      <td>Gets movies by genre</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>/movies/directors/:directorName</td>
+      <td>GET</td>
+      <td>Gets data about a director</td>
+      <td>N/A</td>
+      <td>Yes</td>
+    </tr>
+  </table>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>
 <head>
     <title>Movie API</title>
 </head>
@@ -240,4 +367,4 @@
             
     </p>
 
-</body>
+</body>-->

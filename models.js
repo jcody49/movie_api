@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');//queries mongo db
+const bcrypt = require('bcrypt');//handles hashing
 
+//defines and structures movie schema 
 let movieSchema = mongoose.Schema({
     Title: {type: String, required: true},
     Description: {type: String, required: true},
@@ -17,6 +18,7 @@ let movieSchema = mongoose.Schema({
     Featured: Boolean
 });
 
+//defines and structures user schema 
 let userSchema = mongoose.Schema({
     Username: {type: String, required: true},
     Password: {type: String, required: true},
@@ -32,9 +34,10 @@ userSchema.statics.hashPassword = (password) => {
     return bcrypt.compareSync(password, this.Password);
 };
 
-
+//creates variables for the models--this way they can be manipulated
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
 
+//exports models
 module.exports.Movie = Movie;
 module.exports.User = User;
