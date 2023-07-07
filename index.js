@@ -21,29 +21,35 @@ const { send } = require('process');
 
 
 //port
-
 mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 });
 
-
-console.log(process.env.CONNECTION_URI);
-
+//creates a new Express app object that can be used to configure request methods
 const app = express();
-// create a write stream (in append mode)
 
+
+
+//Integrates Express Validator to perform checks that data inputs have met all requirements
 const { check, validationResult } = require('express-validator');
 
+//Configures Express to serve files in the public directory
 app.use(express.static('public'));
 
+
+//Integrates bodyParser to parse request bodies
 app.use(bodyParser.json());
 
+//Parses URLs in an encoded format
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Integrates cross origin resource sharing--mult sources can access db 
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
+
+//calls cors--disallows unknown sources, permits known sources
 app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
@@ -54,9 +60,9 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
+//implements auth.js and passport files and their authentication code
 let auth = require('./auth')(app);
-const passport = require('passport');
+const passport = require('passport');//authentication middleware
 require('./passport');
 
 
@@ -80,27 +86,27 @@ app.use((err, req, res, next) => {
 
 
 
-
-app.post('/users',
-  [
+//CREATE--registers new user 
+app.post('/users', passport.authenticate('jwt', { session: false })
+  [ //validates data--must meet these requirements
     check('Username', 'Username is required').isLength({ min: 5 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], async (req, res) => {
+  ], async (req, res) => {//async promise 
     try {
-      let errors = validationResult(req);
+      let errors = validationResult(req);//the occuring validation result will show how many errors
 
-      if (!errors.isEmpty()) {
+      if (!errors.isEmpty()) {//if there are errors with the array of requirements...
         return res.status(422).json({ errors: errors.array() });
       }
 
-      let hashedPassword = await Users.hashPassword(req.body.Password);
-      let user = await Users.findOne({ Username: req.body.Username });
+      let hashedPassword = await Users.hashPassword(req.body.Password);//hashes password and creates a variable for it
+      let user = await Users.findOne({ Username: req.body.Username });//finds user in db
 
       if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
+        return res.status(400).send(req.body.Username + ' already exists');//returns error if the user already exists
+      } else {//otherwise, a new user will be registered--must be in the format below
         user = await Users.create({
           Username: req.body.Username,
           Password: hashedPassword,
@@ -108,9 +114,9 @@ app.post('/users',
           Birthdate: req.body.Birthdate
         });
 
-        res.status(201).json(user);
+        res.status(201).json(user);//if user is created successfully,201 will result
       }
-    } catch (error) {
+    } catch (error) {//if the user is unable to be created, 500 will be returned
       console.error(error);
       res.status(500).send('Error: ' + error);
     }
@@ -119,11 +125,11 @@ app.post('/users',
 //CREATE--adds movie to favoriteMovies
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const { Username, MovieID } = req.params;
+    const { Username, MovieID } = req.params; //extracts specific objects within a request and assigns them as variables
 
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username },
-      { $push: { FavoriteMovies: MovieID } },
+    const updatedUser = await Users.findOneAndUpdate( //defines the updated user's favorite movies
+      { Username },//searches for user by username
+      { $push: { FavoriteMovies: MovieID } },//pushes movie to favoriteMovies by MovieID
       { new: true }
     );
 
@@ -183,28 +189,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 
 
-
-/*app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { Username } = req.params;
-  const { Username: newUsername, Password, Email, Birthdate } = req.body;
-
-  Users.findOneAndUpdate(
-    { Username },
-    { $set: { Username: newUsername, Password, Email, Birthdate } },
-    { new: true }
-  )
-    .then((updatedUser) => {
-      if (!updatedUser) {
-        return res.status(404).send('User not found');
-      }
-      res.json(updatedUser);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});*/
-
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   [
     check('Username', 'Username is required').isLength({ min: 5 }),
@@ -237,11 +221,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
-  });
-
-
-
-
+});
 
 
 
