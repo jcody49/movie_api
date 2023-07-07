@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
 
 
 //CREATE--registers new user 
-app.post('/users', passport.authenticate('jwt', { session: false })
+app.post('/users', passport.authenticate('jwt', { session: false }),
   [ //validates data--must meet these requirements
     check('Username', 'Username is required').isLength({ min: 5 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -359,21 +359,8 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 
 
 
-
-
-
-
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
  console.log('Listening on Port ' + port);
 });
-
-
-
-
-
-
-
-
-
 
