@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
 
 
 //CREATE--registers new user 
-app.post('/users', passport.authenticate('jwt', { session: false }),
+app.post('/users',
   [ //validates data--must meet these requirements
     check('Username', 'Username is required').isLength({ min: 5 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -155,7 +155,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   Birthday: Date
 }*/
 
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+/*app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { Username } = req.params;
     const { Username: newUsername, Password, Email, Birthdate } = req.body;
@@ -186,7 +186,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     console.error(error);
     res.status(500).send('Error: ' + error);
   }
-});
+});*/
 
 
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
