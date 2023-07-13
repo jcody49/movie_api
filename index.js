@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Integrates cross origin resource sharing--mult sources can access db 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
 
 
 //calls cors--disallows unknown sources, permits known sources
@@ -154,40 +154,6 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   Email: String, (required)
   Birthday: Date
 }*/
-
-/*app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const { Username } = req.params;
-    const { Username: newUsername, Password, Email, Birthdate } = req.body;
-
-    const user = await Users.findOne({ Username });
-
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-
-    // Hash the new password if it's provided
-    let hashedPassword;
-    if (Password) {
-      hashedPassword = await Users.hashPassword(Password);
-    } else {
-      hashedPassword = user.Password; // Keep the existing hashed password
-    }
-
-    // Update the user with the new data, including the hashed password
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username },
-      { $set: { Username: newUsername, Password: hashedPassword, Email, Birthdate } },
-      { new: true }
-    );
-
-    res.json(updatedUser);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  }
-});*/
-
 
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   [
