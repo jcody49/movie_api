@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Integrates cross origin resource sharing--mult sources can access db 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'http://localhost:9940'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://myflixmovieapp-3df5d197457c.herokuapp.com'];
 
 
 //calls cors--disallows unknown sources, permits known sources
