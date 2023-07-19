@@ -19,7 +19,7 @@ let generateJWTToken = (user) => {
 module.exports = (router) => { //exports a function that handles HTTP POST requests to the /login path--the router object is an Express tool
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => { //passport is to use the localStrategy to authenticate
-      console.log('error' + error);
+      console.log('error', error);
       if (error || !user) {
         return res.status(400).json({
           error: 'Error is: ' + error,
