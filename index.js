@@ -323,7 +323,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 });
 
 app.get('/', (req, res) => {
-  res.json(Movies);
+  res.sendFile(path.join(__dirname, '../myFlix-client', 'index.html'));
 });
 
 
