@@ -323,7 +323,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 });
 
 app.get('/', (req, res) => {
-  res.json(movies);
+  res.json(Movies);
 });
 
 
