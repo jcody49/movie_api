@@ -322,7 +322,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
     });
 });
 
-// Handle requests to serve the React app's index.html for all other routes
+
 app.get('/', (req, res) => {
   res.send('Greetings! And, welcome to my movie database.');
 });
