@@ -322,12 +322,9 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
     });
 });
 
-// Serve the static files from the React app
-app.use(express.static(path.join(__dirname, "../myFlix-client")));
-
 // Handle requests to serve the React app's index.html for all other routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../myFlix-client/src/index.html"));
+app.get('/', (req, res) => {
+  res.send('Greetings! And, welcome to my movie database.');
 });
 
 // Start the server
