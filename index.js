@@ -322,11 +322,15 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
     });
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../myFlix-client/src/index.html'));
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, "../myFlix-client")));
+
+// Handle requests to serve the React app's index.html for all other routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../myFlix-client/src/index.html"));
 });
 
-
+// Start the server
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
  console.log('Listening on Port ' + port);
