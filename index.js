@@ -328,12 +328,12 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
     });
 });
 
-
+/*
 app.get('/', (req, res) => {
   res.send('Greetings! And, welcome to my movie database.');
-  res.send(Movies);
+  res.send(console.log());
 });
-
+*/
 
 // Start the server
 
