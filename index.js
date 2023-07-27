@@ -39,7 +39,7 @@ const { check, validationResult } = require('express-validator');
 
 
 
-app.use(express.static(path.join(__dirname, 'myFlix-client/build')));
+app.use(express.static(path.join(__dirname, 'myFlix-client')));
 
 
 
