@@ -35,7 +35,13 @@ const app = express();
 const { check, validationResult } = require('express-validator');
 
 //Configures Express to serve files in the public directory
-app.use(express.static('public'));
+//app.use(express.static('public'));
+
+
+
+app.use(express.static(path.join(__dirname, 'myFlix-client/build')));
+
+
 
 
 //Integrates bodyParser to parse request bodies
@@ -328,9 +334,17 @@ app.get('/', (req, res) => {
 });
 */
 
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
+
 // Start the server
+/*
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
  console.log('Listening on Port ' + port);
 });
-
+*/
