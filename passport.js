@@ -12,29 +12,30 @@ let Users = Models.User,
   passport.use(new LocalStrategy({
     usernameField: 'Username',
     passwordField: 'Password'
-  }, (username, password, done) => { //"done" indicates the outcome of the authentication
-      console.log(username + '  ' + password);
+  }, (username, password, done) => {
+    console.log('Authenticating user: ' + username);
     
     Users.findOne({ Username: username })
       .then(user => {
-          if (!user) {
-              console.log('incorrect username');
-              return done(null, false, { message: 'Incorrect username.' }); //returns error if username already exists
-          }
-          
-          if (!user.validatePassword(password)) {
-              console.log('incorrect password');
-              return done(null, false, { message: 'Incorrect password.' });
-          }
-          
-          console.log('finished');
-          return done(null, user);
+        if (!user) {
+          console.log('User not found: ' + username);
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        
+        if (!user.validatePassword(password)) {
+          console.log('Incorrect password for user: ' + username);
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        
+        console.log('User authenticated successfully: ' + username);
+        return done(null, user);
       })
       .catch(error => {
-          console.log(error);
-          return done(error);
+        console.log('Error during authentication: ' + error);
+        return done(error);
       });
   }));
+  
   
 
 
