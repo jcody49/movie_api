@@ -298,17 +298,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
     });
 });
 
-//READ--get movies by genre
-app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.find({ 'Genre.Name': req.params.genreName })
-    .then((movies) => {
-      res.status(200).json(movies);
-    })
-    .catch((err) => {
-      res.status(500).send('Error: ' + err);
-    });
-  }  
-);
+
 
 //Iterates over the movies and extracts genres 
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), async (req, res) => {
