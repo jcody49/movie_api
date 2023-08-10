@@ -310,7 +310,16 @@ app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: fals
   }  
 );
 
-
+//Iterates over the movies and extracts genres 
+app.get('/genres', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const movies = await Movies.find(); // Fetch all movies
+    const uniqueGenres = [...new Set(movies.map(movie => movie.Genre.Name))]; // Extract unique genre names
+    res.status(200).json(uniqueGenres);
+  } catch (error) {
+    res.status(500).send('Error: ' + error);
+  }
+});
 
 //READ--get data about a director
 app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
