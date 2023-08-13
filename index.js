@@ -150,6 +150,51 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   }
 });
 
+// Adding a movie to the user's MoviesToWatch list
+app.post('/users/:Username/watchlist/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { Username, MovieID } = req.params;
+
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username },
+      { $addToSet: { MoviesToWatch: MovieID } }, // Use $addToSet to prevent duplicates
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+// Removing a movie from the user's MoviesToWatch list
+app.delete('/users/:Username/watchlist/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const { Username, MovieID } = req.params;
+
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username },
+      { $pull: { MoviesToWatch: MovieID } }, // Use $pull to remove the movie from the array
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
+});
+
+
 
 
 // UPDATE--Update a user's info, by username
