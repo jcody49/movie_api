@@ -129,7 +129,7 @@ app.post('/users',
 });
 
 //CREATE--adds movie to favoriteMovies
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/movies/:MovieID/favorites', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { Username, MovieID } = req.params; //extracts specific objects within a request and assigns them as variables
 
@@ -151,7 +151,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 // Adding a movie to the user's MoviesToWatch list
-app.post('/users/:Username/watchlist/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { Username, MovieID } = req.params;
 
@@ -173,7 +173,7 @@ app.post('/users/:Username/watchlist/:MovieID', passport.authenticate('jwt', { s
 });
 
 // Removing a movie from the user's MoviesToWatch list
-app.delete('/users/:Username/watchlist/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { Username, MovieID } = req.params;
 
@@ -248,7 +248,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 //DELETE--deletes movie from favoriteMovies
 app.delete(
-  '/users/:userName/movies/:MovieID', passport.authenticate('jwt', { session: false }), 
+  '/users/:userName/movies/:MovieID/favorites', passport.authenticate('jwt', { session: false }), 
   (req, res) => {
     Users.findOneAndUpdate(
       { Username: req.params.userName },
