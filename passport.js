@@ -44,11 +44,14 @@ passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: 'your_jwt_secret'
 }, (jwtPayload, callback) => {
+  console.log("INSIDE JWT STRATEGY");
   return Users.findById(jwtPayload._id)
     .then((user) => {
+      console.log("FOUND USER " + jwtPayload._id);
       return callback(null, user);
     })
     .catch((error) => {
+      console.log("CALL ERROR " + error);
       return callback(error)
     });
 }));
