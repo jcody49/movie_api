@@ -154,7 +154,7 @@ app.post('/users/:Username/movies/:MovieID/favorites', passport.authenticate('jw
 app.post('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const { Username, MovieID } = req.params;
-
+    console.log("INSIDE POST REQUEST");
     const updatedUser = await Users.findOneAndUpdate(
       { Username },
       { $addToSet: { MoviesToWatch: MovieID } }, // Use $addToSet to prevent duplicates
