@@ -176,8 +176,59 @@ app.post('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', { s
   }
 });
 
+
+//DELETE--deletes movie from favoriteMovies
+app.delete(
+  '/users/:userName/movies/:MovieID/favorites', passport.authenticate('jwt', { session: false }), 
+  (req, res) => {
+    Users.findOneAndUpdate(
+      { Username: req.params.userName },
+      {
+        $pull: { FavoriteMovies: req.params.MovieID }
+      },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.status(404).send("Error: User doesn't exist");
+        } else {
+          res.json(updatedUser);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
+
 // Removing a movie from the user's MoviesToWatch list
-app.delete('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete(
+  '/users/:userName/movies/:MovieID/watchlist', passport.authenticate('jwt', { session: false }), 
+  (req, res) => {
+    Users.findOneAndUpdate(
+      { Username: req.params.userName },
+      {
+        $pull: { MoviesToWatch: req.params.MovieID }
+      },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.status(404).send("Error: User doesn't exist");
+        } else {
+          res.json(updatedUser);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+  /*
+  async (req, res) => {
   try {
     const { Username, MovieID } = req.params;
 
@@ -196,7 +247,7 @@ app.delete('/users/:Username/:MovieID/watchlist', passport.authenticate('jwt', {
     console.error(error);
     res.status(500).send('Error: ' + error);
   }
-});
+});*/
 
 
 
@@ -250,30 +301,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 
 
-//DELETE--deletes movie from favoriteMovies
-app.delete(
-  '/users/:userName/movies/:MovieID/favorites', passport.authenticate('jwt', { session: false }), 
-  (req, res) => {
-    Users.findOneAndUpdate(
-      { Username: req.params.userName },
-      {
-        $pull: { FavoriteMovies: req.params.MovieID }
-      },
-      { new: true }
-    )
-      .then((updatedUser) => {
-        if (!updatedUser) {
-          return res.status(404).send("Error: User doesn't exist");
-        } else {
-          res.json(updatedUser);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  }
-);
+
 
 
 
