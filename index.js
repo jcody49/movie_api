@@ -61,7 +61,7 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://lo
 
 app.use(cors())
 //calls cors--disallows unknown sources, permits known sources
-/*
+
 app.use(cors({
   
   origin: (origin, callback) => {
@@ -73,7 +73,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-*/
+
 //implements auth.js and passport files and their authentication code
 let auth = require('./auth')(app);
 const passport = require('passport');//authentication middleware
