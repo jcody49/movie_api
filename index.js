@@ -122,8 +122,17 @@ app.post('/users',
   ], async (req, res) => {//async promise 
     try {
       let errors = validationResult(req);//the occuring validation result will show how many errors
-
-      if (!errors.isEmpty()) {//if there are errors with the array of requirements...
+      ////
+      if (!errors.isEmpty()) {
+        // Check for the specific error related to the username length
+        const usernameError = errors.array().find(error => error.param === 'Username');
+        const passwordError = errors.array().find(error => error.param === 'Password');
+        if (usernameError) {
+          return res.status(422).json({ error: 'Username must be at least 5 characters' });
+        }
+        if (passwordError) {
+          return res.status(422).json({ error: 'Password must contain only alphanumeric characters' }); 
+        }
         return res.status(422).json({ errors: errors.array() });
       }
 

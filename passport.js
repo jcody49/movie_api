@@ -55,7 +55,11 @@ passport.use(new LocalStrategy({
  */
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  secretOrKey: jwtSecret, // Use the generated JWT secret
+  /*
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: 'your_jwt_secret'
+  */
 }, (jwtPayload, callback) => {
   /**
    * JWT strategy for user authentication.
